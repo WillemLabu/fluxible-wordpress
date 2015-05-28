@@ -4,10 +4,20 @@ import Application from './components/Application';
 import routes from './configs/routes';
 import ApplicationStore from './stores/ApplicationStore';
 
+import fetchrPlugin from 'fluxible-plugin-fetchr';
+
+let fetchrInstance = fetchrPlugin({
+    xhrPath: '/api' // Path for XHR to be served from
+});
+
 // create new fluxible instance
 const app = new Fluxible({
     component: Application
 });
+
+
+app.plug(fetchrInstance);
+
 
 // register routes
 var MyRouteStore = RouteStore.withStaticRoutes(routes);

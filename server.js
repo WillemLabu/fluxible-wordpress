@@ -8,6 +8,9 @@
 import express from 'express';
 import path from 'path';
 import serialize from 'serialize-javascript';
+
+import bodyParser from 'body-parser';
+
 import {navigateAction} from 'fluxible-router';
 import debugLib from 'debug';
 import React from 'react';
@@ -16,6 +19,7 @@ import HtmlComponent from './components/Html';
 const htmlComponent = React.createFactory(HtmlComponent);
 
 import favicon from 'serve-favicon';
+import wordpress from './services/wordpress';
 
 const debug = debugLib('fluxible-wordpress');
 
@@ -24,6 +28,12 @@ server.set('state namespace', 'App');
 server.use('/public', express.static(path.join(__dirname, '/build')));
 
 server.use(favicon(__dirname + '/images/favicon.png'));
+server.use(bodyParser.json());
+
+var fetchr = app.getPlugin('FetchrPlugin');
+fetchr.registerService(wordpress);
+server.use(fetchr.getXhrPath(), fetchr.getMiddleware());
+
 
 server.use((req, res, next) => {
     let context = app.createContext();
