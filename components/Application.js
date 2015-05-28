@@ -3,7 +3,6 @@
 import React from 'react';
 import Nav from './Nav';
 import Home from './Home';
-import About from './About';
 import ApplicationStore from '../stores/ApplicationStore';
 import provideContext from 'fluxible/addons/provideContext';
 import connectToStores from 'fluxible/addons/connectToStores';
