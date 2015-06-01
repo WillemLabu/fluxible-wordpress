@@ -1,30 +1,64 @@
-'use strict';
+
 var React = require('react');
-var FluxibleMixin = require('fluxible').Mixin;
-var postsStore = require('../stores/PostsStore.js');
+var postsStore = require('../stores/PostsStore');
 
-class Home extends React.Component {
-	mixins: [FluxibleMixin]
+function createMarkup(html) { return {__html: html}; }
 
-    constructor() {
-        // super();
-        // this.state = postsStore.getAll();
-    }
+var Home = React.createClass({
 
-    statics: {
-        storeListeners: {
-            _onChange: [postsStore]
+    contextTypes: {
+        getStore: React.PropTypes.func.isRequired
+    },
+
+    getInitialState: function () {
+        return this.getStoreState();
+    },
+
+    getStoreState: function () {
+        return {
+            posts: this.context.getStore(postsStore).getPosts()
         }
-    }
-	
-    render() {
+    },
+
+    componentDidMount: function () {
+        this.context.getStore(postsStore).addChangeListener(this._onStoreChange);
+    },
+
+    componentWillUnmount: function () {
+        this.context.getStore(postsStore).removeChangeListener(this._onStoreChange);
+    },
+
+    _onStoreChange: function () {
+        this.setState(this.getStoreState());
+    },
+
+    render: function () {
+
         return (
             <div>
-                <h2>Home</h2>
-                <p>Welcome to the site!</p>
+                {
+                    this.state.posts.map(function(post, key){
+                        return (
+                            <div key={key}>
+                                <h1>{post.title}</h1>
+                                <div dangerouslySetInnerHTML={createMarkup(post.content)}></div>
+                            </div>
+                        )
+                    })
+                }
             </div>
         );
+
     }
-}
+});
 
 module.exports = Home;
+                // this.state.posts.forEach(function(key, post){
+                //     return (
+                //         <div key={key}>
+                //             <h1>{post.title}</h1>
+                //             <div>{post.content}</div>
+                //             <hr />
+                //         </div>
+                //     );
+                // })

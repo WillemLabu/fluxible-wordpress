@@ -4,6 +4,8 @@ import Application from './components/Application';
 import routes from './configs/routes';
 import ApplicationStore from './stores/ApplicationStore';
 
+import postsStore from './stores/PostsStore';
+
 import fetchrPlugin from 'fluxible-plugin-fetchr';
 
 let fetchrInstance = fetchrPlugin({
@@ -22,6 +24,8 @@ app.plug(fetchrInstance);
 // register routes
 var MyRouteStore = RouteStore.withStaticRoutes(routes);
 app.registerStore(MyRouteStore);
+
+app.registerStore(postsStore);
 
 // register other stores
 app.registerStore(ApplicationStore);

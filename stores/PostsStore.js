@@ -3,27 +3,21 @@ import createStore from 'fluxible/addons/createStore';
 export default createStore({
     storeName: 'postsStore',
     handlers: {
-        'RECEIVE_POSTS_SUCCESS': '_receivePosts'
+        'RECEIVE_POSTS_SUCCESS': 'handleReceivePosts'
     },
-    initialize: function() {
-        this.posts = [];
+    handleReceivePosts: function (payload) {
+        this.posts = payload;
+        this.emitChange();
     },
-    getAll: function() {
+    getPosts: function () {
         return this.posts;
     },
-    dehydrate: function() {
+    dehydrate: function () {
         return {
             posts: this.posts
         };
     },
-    rehydrate: function(state) {
+    rehydrate: function (state) {
         this.posts = state.posts;
-    },
-    _receivePosts: function(posts) {
-
-        console.log(posts.length + ' - Posts received!');
-
-        this.posts = posts;
-        this.emitChange();
     }
 });
