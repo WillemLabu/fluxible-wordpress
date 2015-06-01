@@ -53,12 +53,3 @@ var Home = React.createClass({
 });
 
 module.exports = Home;
-                // this.state.posts.forEach(function(key, post){
-                //     return (
-                //         <div key={key}>
-                //             <h1>{post.title}</h1>
-                //             <div>{post.content}</div>
-                //             <hr />
-                //         </div>
-                //     );
-                // })
